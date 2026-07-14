@@ -1,0 +1,118 @@
+#include<iostream>
+using namespace std;
+struct node{
+    struct node *next;
+    char data;
+};
+struct node *start=0;
+struct node *createnode(){
+    struct node *h1;
+    h1= (struct node*)malloc(sizeof(struct node));
+    cout<<"Enter the data:";
+    cin>>h1->data;
+    h1->next = 0;
+    return h1;
+}
+void insertS(){
+    struct node *s1, *p1;
+    s1=createnode();
+    if(start == 0){
+        start = s1;
+        s1->next = start;
+    }
+        else
+        {
+            p1 = start;
+            s1->next = start;
+            while(p1->next != start){
+                p1 = p1->next;
+            }
+            p1->next = s1;
+            start = s1; // Update start to point to the new node
+        }
+    }
+
+void insertE(){}
+void insertM(){}
+void deleteS(){
+    struct node *d1 = start;
+    if(start == 0){
+        cout<<"List is empty.\n";
+    }
+    else if(start->next == start){
+        free(start);
+        start = 0;
+    }
+    else{
+        struct node *p1 = start;
+        while(p1->next != start){
+            p1 = p1->next;
+        }
+        p1->next = start->next; // Update the last node's next pointer
+        free(start); // Free the memory of the deleted node
+        start = p1->next; // Update start to the next node
+    }
+}
+void deleteE(){}
+void deleteM(){}    
+void display(){
+    struct node *temp = start;
+    if(start == 0){
+        cout<<"List is empty.\n";
+
+    }
+    else{
+        while (temp->next!= start){
+            cout<<temp->data<<" ";
+            temp = temp->next;
+        }
+        cout<<temp->data<<" "; // Print the last node
+        cout<<endl;
+             
+    }
+    
+}
+int main(){
+    cout<<"\n1. Create a node\n2. Display the list\n3. Exit\n";
+    while(1)
+    {
+    cout<<"Enter your choice:"; 
+    int choice;
+    cin >> choice;
+    switch(choice){
+        case 1: {
+            insertS();
+            break;
+        }
+        case 2: {
+            insertS();
+            break;
+        }
+        case 3:
+            insertM();
+            break;
+        case 4:
+        {
+            deleteS();
+            break;
+        }
+        case 5:
+            deleteE();
+            break;
+        case 6:
+            deleteM();
+            break;
+        case 7:
+            display();
+            break;
+        case 8:
+             exit(0);
+            break;
+
+        default:
+            cout<<"Invalid choice.\n";
+            break;
+    }
+}
+   
+}
