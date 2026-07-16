@@ -1,0 +1,46 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution {
+public:
+    long long gcdSum(vector<int>& nums) {
+        int n = nums.size();
+
+        vector<int> prefixGcd;
+        int mx = 0;
+
+        for (int x : nums) {
+            mx = max(mx, x);
+            prefixGcd.push_back(gcd(x, mx));
+        }
+
+        sort(prefixGcd.begin(), prefixGcd.end());
+
+        long long ans = 0;
+
+        for (int i = 0; i < n / 2; i++) {
+            ans += gcd(prefixGcd[i], prefixGcd[n - 1 - i]);
+        }
+
+        return ans;
+    }
+};
+
+int main() {
+    Solution obj;
+
+    int n;
+    cout << "Enter size of array: ";
+    cin >> n;
+
+    vector<int> nums(n);
+
+    cout << "Enter array elements: ";
+    for (int i = 0; i < n; i++) {
+        cin >> nums[i];
+    }
+
+    cout << "Sum of GCD of Formed Pairs = " << obj.gcdSum(nums) << endl;
+
+    return 0;
+}
