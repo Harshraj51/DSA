@@ -1,0 +1,41 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+bool validPalindrome(string &s, int l, int r){
+    while(l<r){
+        if(s[l] != s[r]){
+            return false;
+        }
+        r--;
+        l++;
+    }
+    return true;
+}
+string isPalindrome(string s){
+    int left = 0; int right = s.length() -1;
+    while(left<right){
+        if(s[left]!=s[right]){
+            if(validPalindrome(s,left+1,right)){
+               s.erase(left,1);
+                return s;
+            }
+            if(validPalindrome(s,left,right-1)){
+                s.erase(right,1);
+                return s;
+            }
+             return "Not Possible";
+        }
+        left++;
+        right--;
+    }
+    return s;
+}
+
+using namespace std;
+int main(){
+    string s;
+    cout<<"Enter string";
+    cin>>s;
+    cout<<isPalindrome(s);
+    return 0;
+}
