@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int maxProduct(int n) {
+        int res = INT_MIN;
+    int temp = n;
+    while(temp){
+    int first = temp%10;
+    n=temp/10;
+    while(n){
+        
+         int second = n%10;
+         int p=first * second;
+         res = max(res,p);
+         n/=10;
+    }
+    temp/=10;
+        }
+        return res;
+    }
+};
