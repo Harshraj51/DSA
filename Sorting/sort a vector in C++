@@ -1,0 +1,21 @@
+#include <bits/stdc++.h>
+using namespace std;
+int main() {
+    cout << "Sort vector in c++ using sort function"<<endl;
+    vector<int> nums {6,2,5,3,9,7};
+
+    // Ascending Order (Default)
+    sort(nums.begin(), nums.end());
+    // Output: 235679
+
+    // Sort the entire vector in descending order
+    sort(nums.begin(), nums.end(), greater<int>());
+    // Output: 9 6 5 5 2 1
+
+   // Print vector nums.
+    for(auto n:nums){
+        cout<< n;
+    }
+
+    return 0;
+}
