@@ -1,0 +1,42 @@
+class Solution {
+public:
+    bool predictTheWinner(vector<int>& nums) {
+         int n = nums.size();
+    int p1=0;
+    int p2=0;
+    int current = 0;
+    while(n){ 
+        if(current%2 == 0){
+            // cout<<"Player 1's turn"<<endl;
+             if(nums[0]>nums[n-1]){
+                p1+=nums[0];
+                nums.erase(nums.begin());
+                // cout<<"Player 1 chose: "<<nums[0]<<endl;
+             } else{
+                p1+=nums[n-1];
+                nums.erase(nums.end()-1);
+                // cout<<"Player 1 chose: "<<nums[n-1]<<endl;
+             }
+        }
+        else{
+           // cout<<"Player 2's turn"<<endl;
+            if(nums[0]>nums[n-1] && nums[n-1]>nums[n-2] ){
+                p2+=nums[0];
+                nums.erase(nums.begin());
+                // cout<<"Player 2 chose: "<<nums[0]<<endl;
+            } else{
+                p2+=nums[n-1];
+                nums.erase(nums.end()-1);
+                // cout<<"Player 2 chose: "<<nums[n-1]<<endl;
+            }
+        }
+        current++;
+        n = nums.size();
+    }
+
+    if(p1>=p2){
+        return true;
+    }
+    return false;
+    }
+};
