@@ -1,0 +1,20 @@
+class Solution {
+public:
+    vector<int> findMissingElements(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        vector<int> result={};
+        int n = nums.size();
+        int count = nums[0];
+        int i = 0;
+      while(i<n){
+        if(count == nums[i]){
+            count++;
+            i++;
+        }else{
+        result.push_back(count);
+        count++;
+        }
+      }
+       return result;
+    }
+};
