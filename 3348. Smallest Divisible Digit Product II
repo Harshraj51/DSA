@@ -1,0 +1,89 @@
+class Solution {
+private:
+    // Calculates the minimum number of digits needed to form a product divisible by t
+    int getMinRequiredLength(long long t) {
+        int count = 0;
+        for (int d : {9, 8, 7, 6, 5, 4, 3, 2}) {
+            while (t % d == 0) {
+                t /= d;
+                count++;
+            }
+        }
+        return (t > 1) ? -1 : count;
+    }
+
+    // Fills available spaces optimally with the smallest sequence of digits
+    string constructMinSuffix(long long t, int availableLen) {
+        string suffix = "";
+        for (int d : {9, 8, 7, 6, 5, 4, 3, 2}) {
+            while (t % d == 0) {
+                suffix += to_string(d);
+                t /= d;
+            }
+        }
+        while ((int)suffix.length() < availableLen) {
+            suffix += '1';
+        }
+        sort(suffix.begin(), suffix.end());
+        return suffix;
+    }
+
+public:
+    string smallestNumber(string num, long long t) {
+        // Step 1: Check if t has any prime factors outside {2, 3, 5, 7}
+        long long temp = t;
+        for (int p : {2, 3, 5, 7}) {
+            while (temp % p == 0) temp /= p;
+        }
+        if (temp > 1) return "-1";
+
+        int n = num.length();
+        
+        // Find the first occurrence of '0' if any
+        int first_zero = num.find('0');
+        int limit = (first_zero == string::npos) ? n : first_zero;
+
+        // Step 2: Track cumulative remaining t from left to right
+        vector<long long> requiredT(n + 1);
+        requiredT[0] = t;
+        for (int i = 0; i < limit; ++i) {
+            long long curT = requiredT[i];
+            int digit = num[i] - '0';
+            requiredT[i + 1] = curT / std::gcd(curT, (long long)digit);
+        }
+
+        // Step 3: If num itself is already valid and has no zeros
+        if (first_zero == string::npos && requiredT[n] == 1) {
+            return num;
+        }
+
+        // Step 4: Backtrack from right to left up to the first valid prefix position
+        // If there's a zero, we can only modify positions up to and including the first zero position.
+        int start_idx = (first_zero == string::npos) ? n - 1 : first_zero;
+        for (int i = start_idx; i >= 0; --i) {
+            int currentDigit = num[i] - '0';
+            
+            for (int d = currentDigit + 1; d <= 9; ++d) {
+                long long nextT = requiredT[i] / std::gcd(requiredT[i], (long long)d);
+                int minLenNeeded = getMinRequiredLength(nextT);
+                int availableSpaces = n - 1 - i;
+                
+                if (minLenNeeded <= availableSpaces) {
+                    string prefix = num.substr(0, i) + to_string(d);
+                    string suffix = constructMinSuffix(nextT, availableSpaces);
+                    return prefix + suffix;
+                }
+            }
+        }
+
+       
+        int minLenNeeded = getMinRequiredLength(t);
+        int targetLen = max(1, minLenNeeded);
+        
+       
+        if (targetLen <= n) {
+            targetLen = n + 1;
+        }
+        return constructMinSuffix(t, targetLen);
+    }
+};
