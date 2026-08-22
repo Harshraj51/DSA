@@ -1,0 +1,23 @@
+class Solution {
+public:
+    bool checkRecord(string s) {
+        int abscount =  0;
+        int latecount = 0;
+        for(auto c:s){
+            if(c=='L'){
+                latecount++;
+                if(latecount>=3)
+                 return false;
+            } 
+            else if( c == 'A'){
+                abscount++;
+                latecount = 0;
+            }
+            else
+             latecount = 0;
+        }
+        if(abscount>=2)
+            return false;
+        return true;
+    }
+};
