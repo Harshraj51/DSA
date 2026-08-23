@@ -1,0 +1,37 @@
+class Solution {
+public:
+    bool sumGame(string num) {
+        int n = num.size();
+        int half = n / 2;
+
+        int sumDiff = 0;
+        int qDiff = 0;
+
+        
+        for (int i = 0; i < half; i++) {
+            if (num[i] == '?') {
+                qDiff++;
+            } else {
+                sumDiff += num[i] - '0';
+            }
+        }
+
+        for (int i = half; i < n; i++) {
+            if (num[i] == '?') {
+                qDiff--;
+            } else {
+                sumDiff -= num[i] - '0';
+            }
+        }
+
+        int totalQ = 0;
+
+        for (char c : num) {
+            if (c == '?')
+                totalQ++;
+        }
+        if (totalQ % 2 == 1)
+            return true;
+        return sumDiff + 9 * qDiff / 2 != 0;
+    }
+};
