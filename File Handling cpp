@@ -1,0 +1,28 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main()
+{
+    // File create/open
+    ofstream file("data.txt");
+
+    // Check file opened or not
+    if (!file)
+    {
+        cout << "File could not be created!";
+        return 0;
+    }
+
+    // Write data into file
+    file << "Hello Harshraj\n";
+    file << "Welcome to C++ File Handling\n";
+    file << "This is my first file.\n";
+
+    // Close file
+    file.close();
+
+    cout << "Data written successfully.";
+
+    return 0;
+}
