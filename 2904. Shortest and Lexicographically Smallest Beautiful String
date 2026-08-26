@@ -1,0 +1,41 @@
+class Solution {
+public:
+    string shortestBeautifulSubstring(string s, int k) {
+
+        unordered_map<char, int> mp;
+
+        int low = 0;
+        string ans = "";
+
+        mp['1'] = 0;
+
+        for (int high = 0; high < s.size(); high++) {
+
+            // add current element is equall to '1'
+            if (s[high] == '1') {
+                mp['1']++;
+            }
+            // condition true
+            while (mp['1'] == k) {
+
+                string current = s.substr(low, high - low + 1);
+
+                // First shortest length then lexicographically smallest
+                if (ans == "" ||
+                    current.length() < ans.length() ||
+                    (current.length() == ans.length() && current < ans)) {
+                    ans = current;
+                }
+
+                // Remove s[low] from window
+                if (s[low] == '1') {
+                    mp['1']--;
+                }
+
+                low++;
+            }
+        }
+
+        return ans;
+    }
+};
