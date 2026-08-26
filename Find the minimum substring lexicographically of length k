@@ -1,0 +1,33 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string s = "bacdef";
+    int k = 3;
+
+    string ans = "";
+
+    int left = 0;
+    int right = 0;
+
+    while (right < s.length()) {
+
+        if (right - left + 1 == k) {
+
+            string current = s.substr(left, k);
+
+            if (ans == "" || current < ans) {
+                ans = current;
+            }
+
+            left++;
+        }
+
+        right++;
+    }
+
+    cout << "Minimum substring: " << ans;
+
+    return 0;
+}
