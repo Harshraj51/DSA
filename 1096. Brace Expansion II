@@ -1,0 +1,59 @@
+class Solution {
+public:
+
+    // Combine two sets by concatenation
+    set<string> combine(set<string>& a, set<string>& b) {
+        set<string> res;
+
+        for (string x : a) {
+            for (string y : b) {
+                res.insert(x + y);
+            }
+        }
+
+        return res;
+    }
+
+    // Parse an expression until ',' or '}'
+    set<string> parse(string& s, int& i) {
+        set<string> result;
+        set<string> current = {""};
+
+        while (i < s.size() && s[i] != '}' && s[i] != ',') {
+
+            set<string> part;
+            if (s[i] >= 'a' && s[i] <= 'z') {
+                part.insert(string(1, s[i]));
+                i++;
+            }
+            else if (s[i] == '{') {
+                i++;
+
+                part = parse(s, i);
+
+                i++;
+            }
+            current = combine(current, part);
+        }
+
+        result = current;
+
+        while (i < s.size() && s[i] == ',') {
+            i++;
+
+            set<string> next = parse(s, i);
+
+            result.insert(next.begin(), next.end());
+        }
+
+        return result;
+    }
+
+    vector<string> braceExpansionII(string expression) {
+        int i = 0;
+
+        set<string> result = parse(expression, i);
+
+        return vector<string>(result.begin(), result.end());
+    }
+};
