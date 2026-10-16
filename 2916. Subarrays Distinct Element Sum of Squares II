@@ -1,0 +1,94 @@
+
+class Solution {
+public:
+    const int MOD = 1e9 + 7;
+
+    struct Node {
+        long long sum, sq, lazy;
+    };
+
+    vector<Node> tree;
+    int n;
+
+    void push(int node, int start, int end) {
+        if (tree[node].lazy == 0)
+            return;
+
+        long long val = tree[node].lazy;
+        int mid = (start + end) / 2;
+
+        if (start != end) {
+            int left = node * 2;
+            int right = node * 2 + 1;
+
+            tree[left].lazy += val;
+            tree[right].lazy += val;
+
+            tree[left].sq = (tree[left].sq
+                + 2 * val * tree[left].sum
+                + val * val * (mid - start + 1)) % MOD;
+
+            tree[right].sq = (tree[right].sq
+                + 2 * val * tree[right].sum
+                + val * val * (end - mid)) % MOD;
+
+            tree[left].sum = (tree[left].sum
+                + val * (mid - start + 1)) % MOD;
+
+            tree[right].sum = (tree[right].sum
+                + val * (end - mid)) % MOD;
+        }
+
+        tree[node].lazy = 0;
+    }
+
+    void update(int node, int start, int end,
+                int l, int r, long long val) {
+        if (r < start || end < l)
+            return;
+
+        if (l <= start && end <= r) {
+            tree[node].sq = (tree[node].sq
+                + 2 * val * tree[node].sum
+                + val * val * (end - start + 1)) % MOD;
+
+            tree[node].sum = (tree[node].sum
+                + val * (end - start + 1)) % MOD;
+
+            tree[node].lazy = (tree[node].lazy + val) % MOD;
+            return;
+        }
+
+        push(node, start, end);
+
+        int mid = (start + end) / 2;
+
+        update(node * 2, start, mid, l, r, val);
+        update(node * 2 + 1, mid + 1, end, l, r, val);
+
+        tree[node].sum = (tree[node * 2].sum
+            + tree[node * 2 + 1].sum) % MOD;
+
+        tree[node].sq = (tree[node * 2].sq
+            + tree[node * 2 + 1].sq) % MOD;
+    }
+
+    int sumCounts(vector<int>& nums) {
+        n = nums.size();
+        tree.resize(4 * n + 5, {0, 0, 0});
+
+        vector<int> last(100001, -1);
+        long long ans = 0;
+
+        for (int i = 0; i < n; i++) {
+            int prev = last[nums[i]];
+
+            update(1, 0, n - 1, prev + 1, i, 1);
+
+            ans = (ans + tree[1].sq) % MOD;
+            last[nums[i]] = i;
+        }
+
+        return ans;
+    }
+};
